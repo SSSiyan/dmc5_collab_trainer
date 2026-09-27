@@ -1,4 +1,4 @@
-PlayerManipulator = require "PlayerManipulator"
+PlayerManipulator = require("Collab Trainer/Scripts/PlayerManipulator")
 
 --function to set punch kick state
 --set_weaponBalrog(app.PlayerDante.WeaponS_Balrog)

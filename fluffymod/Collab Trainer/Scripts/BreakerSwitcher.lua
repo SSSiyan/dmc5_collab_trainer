@@ -20,7 +20,7 @@
 --punchline: 00000000A2982798
 --
 
-PlayerManipulator = require "PlayerManipulator"
+PlayerManipulator = require("Collab Trainer/Scripts/PlayerManipulator")
 
 nero = nil
 

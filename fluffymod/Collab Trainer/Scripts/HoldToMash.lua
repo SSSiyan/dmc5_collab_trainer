@@ -1,7 +1,5 @@
-
-
-local enumerator = require("enumerator")
-local playermanip = require("PlayerManipulator")
+local enumerator =  require("Collab Trainer/Scripts/Enumerator")
+local playermanip  = require("Collab Trainer/Scripts/PlayerManipulator")
 
 DoublePress = {}
 DoublePress.threshhold = 0.0

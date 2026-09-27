@@ -2,7 +2,7 @@
 
 local PlayerManipulator = {}
 
-PlayerManipulator.enumerator = require "enumerator"
+PlayerManipulator.enumerator = require("Collab Trainer/Scripts/Enumerator")
 
 PlayerManipulator.enumerator.app = {
 	PlayerID = {}

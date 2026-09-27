@@ -1,6 +1,6 @@
-PlayerManipulator = require "PlayerManipulator"
+PlayerManipulator = require("Collab Trainer/Scripts/PlayerManipulator")
 
-enumerator = require "Enumerator"
+enumerator =  require("Collab Trainer/Scripts/Enumerator")
 
 
 --function to set punch kick state
