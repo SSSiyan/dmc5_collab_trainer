@@ -433,8 +433,8 @@ Mods::Mods()
         m_mods.emplace_back(std::make_unique<VergilNoRoyalForkDelay>());
         m_mods.emplace_back(std::make_unique<VergilDoppelInitSetup>());
         m_mods.emplace_back(std::make_unique<InstantDoppel>()); // requires VergilDoppelInitSetup
-        //m_mods.emplace_back(std::make_unique<VergilTrickTrailsEfx>()); // needs boss trick up to be present, doesn't crash but doesn't load effects
-        m_mods.emplace_back(std::make_unique<BossTrickUp>());
+        // m_mods.emplace_back(std::make_unique<VergilTrickTrailsEfx>()); // needs boss trick up to be present, doesn't crash but doesn't load effects
+        m_mods.emplace_back(std::make_unique<BossTrickUp>()); // requires TrickTrailsEfx
         m_mods.emplace_back(std::make_unique<VergilSDTAlwaysCancels>());
         m_mods.emplace_back(std::make_unique<DoppelNoComeBack>());
         m_mods.emplace_back(std::make_unique<BossVergilMoves>()); // requires pl0300ControllerManager
