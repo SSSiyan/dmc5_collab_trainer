@@ -17,7 +17,7 @@ bool DanteSDTRework::cheaton{ NULL };
 float minSDTEnterFloat{ 3000.0f };
 float maxSDTEnterFloat{ 10000.0f };
 float newSDTSpeed{ 5.0f }; // quicksdt
-float dTTick{ 5.0f };      // dt drain rate
+float dTTick{ 5.0f }; // dt drain rate
 
 // clang-format off
 // only in clang/icl mode on x64, sorry
@@ -197,7 +197,7 @@ std::optional<std::string> DanteSDTRework::on_initialize() {
 
     m_is_enabled         = &DanteSDTRework::cheaton;
     m_on_page            = Page_DanteSDT;
-    m_depends_on         = { "PlayerTracker", "DanteMaxSDT", "DanteAlwaysQ4SDT" };
+    m_depends_on         = { "PlayerTracker", "DanteMaxSDT", "DanteAlwaysQ4SDT", "DanteQuickSDT" };
     m_full_name_string   = "SDT Rework";
     m_author_string      = "SSSiyan, V.P.Zadov";
     m_description_string = "DT and SDT are a shared resource. Tap to DT, Hold to SDT. At least 3 bars of DT are required to enter SDT.";
