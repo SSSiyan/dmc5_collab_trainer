@@ -677,8 +677,9 @@ std::optional<std::string> BreakerSwitcher::on_initialize() {
   m_is_enabled           = &BreakerSwitcher::cheaton;
   m_on_page              = Page_Breaker;
   m_depends_on           = { "PlayerTracker", "GameInput" };
-  m_full_name_string     = "Breaker Switcher (+)";
-  m_author_string        = "The HitchHiker (original version by Nino)\n Disable Breakaway made with assistance from Lidemi";
+  m_full_name_string     = "Breaker Switcher (Old) (+)";
+  m_author_string        = "The HitchHiker (original version by Nino)\n"
+                         "Disable Breakaway made with assistance from Lidemi";
   m_description_string   = "Make sure your d-pad is bound to breakaway, then "
                          "press a button on the d-pad to switch breakers.";
 
