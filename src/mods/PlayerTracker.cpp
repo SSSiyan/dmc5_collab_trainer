@@ -210,65 +210,68 @@ static naked void player_detour() {
 }
 static naked void summon_detour() {
 	__asm {
-		//64 = status
-		//D0-> Down to enemy
-		//B18 = enemy ID
-		//108 = is enemy
-		//1D2 = master lock-on
-		//1F0-> down to transform
-		//30 = x coordinate
-		//34 = y coordinate
-		//38 = z coordinate
+			//64 = status
+			//D0-> Down to enemy
+			//B18 = enemy ID
+			//108 = is enemy
+			//1D2 = master lock-on
+			//1F0-> down to transform
+			//30 = x coordinate
+			//34 = y coordinate
+			//38 = z coordinate
 
-		push r8
-		push r9
+			push r8
+			push r9
 
-		mov r8, [rdi + 0xD0]
-		mov r9, [r8 + 0x1F0]
-		cmp dword ptr[r8 + 0xB18], 0x20
-		je writegriffon
-		cmp dword ptr[r8 + 0xB18], 0x21
-		je writeshadow
-		cmp dword ptr[r8 + 0xB18], 0x22
-		je writenightmare
-		jmp originalcode
+			mov r8, [rdi+0xD0]
+			mov r9, [r8+0x1F0]
+			cmp dword ptr [r8+0xB18], 0x20
+			je writegriffon
+			cmp dword ptr [r8+0xB18], 0x21
+			je writeshadow
+			cmp dword ptr [r8+0xB18], 0x22
+			je writenightmare
+			jmp originalcode
 
 		writeshadow :
-		mov[PlayerTracker::shadowcontroller], rdi
-			mov[PlayerTracker::shadowentity], r8
-			mov[PlayerTracker::shadowtransform], r9
+			mov [PlayerTracker::shadowcontroller], rdi
+			mov [PlayerTracker::shadowentity], r8
+			mov [PlayerTracker::shadowtransform], r9
+			jmp originalcode
 
-			writegriffon :
-		mov[PlayerTracker::griffoncontroller], rdi
-			mov[PlayerTracker::griffonentity], r8
-			mov[PlayerTracker::griffontransform], r9
+		writegriffon :
+			mov [PlayerTracker::griffoncontroller], rdi
+			mov [PlayerTracker::griffonentity], r8
+			mov [PlayerTracker::griffontransform], r9
+			jmp originalcode
 
-			writenightmare :
-		mov[PlayerTracker::nightmarecontroller], rdi
-			mov[PlayerTracker::nightmareentity], r8
-			mov[PlayerTracker::nightmaretransform], r9
+		writenightmare :
+			mov [PlayerTracker::nightmarecontroller], rdi
+			mov [PlayerTracker::nightmareentity], r8
+			mov [PlayerTracker::nightmaretransform], r9
+			jmp originalcode
 
-			originalcode :
-		pop r9
+		originalcode :
+			pop r9
 			pop r8
-			cmp dword ptr[rdi + 0x64], ebp
+			cmp dword ptr[rdi+0x64], ebp
 			je je_jmp
 			jmp ret_jmp
 
-			je_jmp :
-		jmp qword ptr[PlayerTracker::summon_jmp_je] //DevilMayCry5.exe+3F0756 
-			ret_jmp :
+		je_jmp:
+			jmp qword ptr[PlayerTracker::summon_jmp_je] //DevilMayCry5.exe+3F0756 
+		ret_jmp:
 			jmp qword ptr[PlayerTracker::summon_jmp_ret]
 	}
 }
 static naked void incombat_detour() {
 	__asm {
-		mov byte ptr[PlayerTracker::incombat], 0
-		cmp byte ptr[rax + 0x00000ECA], sil
+		mov byte ptr [PlayerTracker::incombat], 0
+		cmp byte ptr [rax+0x00000ECA], sil
 		je jmp_ret
-		mov byte ptr[PlayerTracker::incombat], 1
+		mov byte ptr [PlayerTracker::incombat], 1
 		jmp_ret:
-		jmp qword ptr[PlayerTracker::incombat_jmp_ret]
+		jmp qword ptr [PlayerTracker::incombat_jmp_ret]
 	}
 }
 //Track player Sin Value for inertia redirect
@@ -276,16 +279,16 @@ static naked void sin_detour() {
 	__asm {
 	sincoordinatenewmem:
 		cmp rdi, [PlayerTracker::playerentity]
-			jne sincoordinateoriginalcode
+		jne sincoordinateoriginalcode
 
-			movss dword ptr[PlayerTracker::sinvalue], xmm0
+		movss dword ptr[PlayerTracker::sinvalue], xmm0
 
-			sincoordinateoriginalcode :
+	sincoordinateoriginalcode:
 		xorps xmm6, xmm6
-			cvtss2sd xmm6, xmm0
+		cvtss2sd xmm6, xmm0
 
-			sincoordinateexit :
-		jmp qword ptr[PlayerTracker::sin_jmp_ret]
+	sincoordinateexit:
+		jmp qword ptr [PlayerTracker::sin_jmp_ret]
 	}
 }
 //Track player Cos Value for inertia redirect
@@ -293,15 +296,15 @@ static naked void cos_detour() {
 	__asm {
 	newmem:
 		cmp rdi, [PlayerTracker::playerentity]
-			jne coscoordinateoriginalcode
+		jne coscoordinateoriginalcode
 
-			movss dword ptr[PlayerTracker::cosvalue], xmm0
+		movss dword ptr[PlayerTracker::cosvalue], xmm0
 
-			coscoordinateoriginalcode :
+	coscoordinateoriginalcode :
 		mulss xmm0, [rdi + 0x00000F88]
 
-			coscoordinateexit :
-			jmp qword ptr[PlayerTracker::cos_jmp_ret]
+	coscoordinateexit :
+		jmp qword ptr[PlayerTracker::cos_jmp_ret]
 	}
 }
 
@@ -309,13 +312,13 @@ static naked void cos_detour() {
 static naked void threshhold_detour() {
 	__asm {
 	newmem:
-		mov byte ptr[PlayerTracker::redirect], 1
-			jb jbexit
-			mov byte ptr[PlayerTracker::redirect], 0
-			movss xmm0, [threshholdsubstitute]
-			jmp qword ptr[PlayerTracker::threshhold_jmp_ret]
-			jbexit :
-			jmp qword ptr[PlayerTracker::threshhold_jmp_jb]
+		mov byte ptr [PlayerTracker::redirect], 1
+		jb jbexit
+		mov byte ptr [PlayerTracker::redirect], 0
+		movss xmm0, [threshholdsubstitute]
+		jmp qword ptr [PlayerTracker::threshhold_jmp_ret]
+	jbexit:
+		jmp qword ptr [PlayerTracker::threshhold_jmp_jb]
 	}
 }
 

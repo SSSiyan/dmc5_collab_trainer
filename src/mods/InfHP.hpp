@@ -11,6 +11,8 @@ public:
 	// called by m_mods->init() you'd want to override this
 	std::optional<std::string> on_initialize() override;
 	static uintptr_t jmp_ret;
+	static uintptr_t jmp_ret2;
+
 	static bool cheaton;
 
 	// Override this things if you want to store values in the config file
@@ -30,6 +32,6 @@ private:
 	// around minhook
 	void init_check_box_info() override;
 
-	std::shared_ptr<Detour_t> m_detour;
+	std::shared_ptr<Detour_t> m_detour, m_detour2;
 	//std::unique_ptr<FunctionHook> m_function_hook;
 };
