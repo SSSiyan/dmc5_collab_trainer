@@ -392,16 +392,16 @@ Mods::Mods()
 
         m_mods.emplace_back(std::make_unique<AirMoves>());
         //m_mods.emplace_back(std::make_unique<EnemyWaveSettings>()); // Not even gonna try bro // TESTING
-        //m_mods.emplace_back(std::make_unique<CheckpointPos>()); // TESTING
-        // m_mods.emplace_back(std::make_unique<BossDanteSetup>()); // crashes on loading the enemy, can't find anything useful in the stack
-        m_mods.emplace_back(std::make_unique<BossVergilSettings>()); // TESTING, crashes
+        m_mods.emplace_back(std::make_unique<CheckpointPos>());
+        // m_mods.emplace_back(std::make_unique<BossDanteSetup>()); // depends on DanteNoSdtStun // crashes on loading the enemy, can't find anything useful in the stack
+        // m_mods.emplace_back(std::make_unique<BossVergilSettings>()); // TESTING, crashes
         m_mods.emplace_back(std::make_unique<WaveEditorMod::EnemyWaveEditor>()); // I think EnemySwapper needs this
         m_mods.emplace_back(std::make_unique<SecretMissionTimer>());
         m_mods.emplace_back(std::make_unique<PosActionEditor>());
         m_mods.emplace_back(std::make_unique<NoRoundtripCallback>());
         m_mods.emplace_back(std::make_unique<EnemySpawner>());
         //// Nero
-        m_mods.emplace_back(std::make_unique<Pl0000SlowWorldStop>()); // TESTING
+        m_mods.emplace_back(std::make_unique<Pl0000SlowWorldStop>());
         //// Dante
         m_mods.emplace_back(std::make_unique<DanteAirTrickSettings>());
         m_mods.emplace_back(std::make_unique<GroundTrickNoDistanceRestriction>()); // used in air trick settings I think but has no ui
@@ -433,7 +433,7 @@ Mods::Mods()
         m_mods.emplace_back(std::make_unique<VergilNoRoyalForkDelay>());
         m_mods.emplace_back(std::make_unique<VergilDoppelInitSetup>());
         m_mods.emplace_back(std::make_unique<InstantDoppel>()); // requires VergilDoppelInitSetup
-        // m_mods.emplace_back(std::make_unique<VergilTrickTrailsEfx>()); // needs boss trick up to be present, doesn't crash but doesn't load effects
+        m_mods.emplace_back(std::make_unique<VergilTrickTrailsEfx>()); // needs boss trick up to be present, doesn't crash but doesn't load effects
         m_mods.emplace_back(std::make_unique<BossTrickUp>()); // requires TrickTrailsEfx
         m_mods.emplace_back(std::make_unique<VergilSDTAlwaysCancels>());
         m_mods.emplace_back(std::make_unique<DoppelNoComeBack>());

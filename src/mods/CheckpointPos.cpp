@@ -1,7 +1,6 @@
 #include "CheckpointPos.hpp"
 //#include "MissionManager.hpp"
 //#include "EnemySwapper.hpp"
-//clang-format off
 
 bool CheckpointPos::cheaton{NULL};
 bool CheckpointPos::isCustomPos{NULL};
@@ -38,6 +37,7 @@ void load_boss_checkpoint() {
   }
 }
 
+//clang-format off
 static naked void restart_pos_detour() {
     __asm {
         cmp byte ptr [CheckpointPos::cheaton], 01
@@ -63,6 +63,7 @@ static naked void restart_pos_detour() {
         jmp originalcode
   }
 }
+//clang-format on
 
 std::optional<std::string> CheckpointPos::on_initialize() {
   init_check_box_info();
@@ -70,7 +71,7 @@ std::optional<std::string> CheckpointPos::on_initialize() {
   m_is_enabled        = &cheaton;
   m_on_page           = Page_GameMode;
   m_full_name_string = "Custom Checkpoints (+)";
-  m_depends_on = { "PlayerTracker","GameplayStateTracker" };
+  m_depends_on = { "PlayerTracker", "GameplayStateTracker" };
   m_author_string    = "V.P.Zadov";
   m_description_string = "Create a custom checkpoint position. Uses boss checkpoints by default.";
 
@@ -118,8 +119,8 @@ void CheckpointPos::on_draw_ui()
     ImGui::InputFloat("Y coord", &customPos.y, 0.0f, 0.0f, "%.3f");
     ImGui::InputFloat("Z coord", &customPos.z, 0.0f, 0.0f, "%.3f");
     if (ImGui::Button("Get the current player position (don't click it if you are not in a mission)")) {
-        if (GameplayStateTracker::nowFlow == 22)//gameplayFlow, btw still can crash if click while loading screen after gameplay
-        playerPos = get_player_coords();
+        if (GameplayStateTracker::nowFlow == 22) // gameplayFlow, btw still can crash if click while loading screen after gameplay
+            playerPos = get_player_coords();
         }
     ImGui::TextWrapped("X: %.3f", playerPos.x);
     ImGui::TextWrapped("Y: %.3f", playerPos.y);
@@ -178,4 +179,3 @@ Vector3f CheckpointPos::get_player_coords() {
     gf::Vec3 pos = *(gf::Vec3*)(transform + 0x30);
     return pos.to_vector3f();
 }
-//clang-format on
