@@ -424,7 +424,7 @@ Mods::Mods()
         m_mods.emplace_back(std::make_unique<VergilAirTrick>()); // instant transmission crashes if stack is misaligned
         ////m_mods.emplace_back(std::make_unique<VergilSDTTrickEfx>()); // Removed until better times
         m_mods.emplace_back(std::make_unique<InfiniteTrickUp>());
-        m_mods.emplace_back(std::make_unique<DMC3JCE>());
+        //m_mods.emplace_back(std::make_unique<DMC3JCE>()); // crashes on init now only if using aoblists? I edited some V stuff in PlayerTracker I guess??
         m_mods.emplace_back(std::make_unique<JCENoMotivationLimit>()); // akasha51 https://www.nexusmods.com/devilmaycry5/users/1241088
         ////m_mods.emplace_back(std::make_unique<TrickDodgeNoDisappear>()); // TESTING, doesn't work but idc
         m_mods.emplace_back(std::make_unique<VergilWalkingGuard>());
@@ -433,15 +433,15 @@ Mods::Mods()
         m_mods.emplace_back(std::make_unique<VergilNoRoyalForkDelay>());
         m_mods.emplace_back(std::make_unique<VergilDoppelInitSetup>());
         m_mods.emplace_back(std::make_unique<InstantDoppel>()); // requires VergilDoppelInitSetup
-        m_mods.emplace_back(std::make_unique<VergilTrickTrailsEfx>()); // needs boss trick up to be present, doesn't crash but doesn't load effects
-        m_mods.emplace_back(std::make_unique<BossTrickUp>()); // requires TrickTrailsEfx
+        //m_mods.emplace_back(std::make_unique<VergilTrickTrailsEfx>()); // needs boss trick up to be present
+        //m_mods.emplace_back(std::make_unique<BossTrickUp>()); // requires TrickTrailsEfx
         m_mods.emplace_back(std::make_unique<VergilSDTAlwaysCancels>());
         m_mods.emplace_back(std::make_unique<DoppelNoComeBack>());
         m_mods.emplace_back(std::make_unique<BossVergilMoves>()); // requires pl0300ControllerManager
         m_mods.emplace_back(std::make_unique<VergilGuardSlowMotion>()); // works but meh idc about it
         m_mods.emplace_back(std::make_unique<VergilQuickSilver>());
         m_mods.emplace_back(std::make_unique<ParryWithFinesse>());
-
+        
 		for (const auto& mod : m_mods) {
 			m_name_to_mod_map.insert({ std::string(mod->get_name()), mod.get() });
 		}

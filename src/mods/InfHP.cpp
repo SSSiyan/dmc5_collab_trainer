@@ -8,7 +8,7 @@ bool InfHP::cheaton{ NULL };
 // clang-format off
 // only in clang/icl mode on x64, sorry
 
-static naked void detour() { // used for playhers
+static naked void detour() { // used for players
     __asm {
         //cmp[PlayerTracker::playerid], 1 //change this to the char number obviously
         //jne code

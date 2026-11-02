@@ -97,10 +97,10 @@ void startup_thread() {
     freopen("CONOUT$", "w", stdout);
     freopen("CONOUT$", "w", stderr);
 #endif
-
+    // Wait so we can see if boot crashes are our fault
+    Sleep(5000);
     if (load_dinput8()) {
 		g_framework = std::make_unique<ModFramework>();
-        
         // After the the main framework is instantiated we initialize
         g_framework->begin_initializing();
     }
@@ -109,9 +109,7 @@ void startup_thread() {
 BOOL APIENTRY DllMain(HANDLE handle, DWORD reason, LPVOID reserved) {
     if (reason == DLL_PROCESS_ATTACH) {
 #ifndef NDEBUG
-        MessageBox(NULL,
-            "Now's a good time to attach a debugger if you want.",
-            "Attach", MB_ICONINFORMATION);
+        // MessageBox(NULL, "Now's a good time to attach a debugger if you want.", "Attach", MB_ICONINFORMATION);
 #endif
         CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)startup_thread, handle, 0, nullptr);
     }
