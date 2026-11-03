@@ -26,20 +26,31 @@ static void AddHitDataPtr(void* ptr) {
 // clang-format off
 static naked void detour() {
     __asm {
-        movss [rdi+0x58], xmm0
+        //movss [rdi+0x58], xmm0
+        mov eax, [rdi+0x18]
+        mov [rbx+0x18], eax
+
         cmp byte ptr [DrawLines::cheaton], 0
         je retcode
         cmp byte ptr [DrawLines::attackSpheresDisplay], 0
         je retcode
         
-		// filter out some always active hitbox
-        cmp dword ptr [rdi-0x340], 0x00740053 // 'S' 't'
-        je check2
+		// filter out some always active hitboxes
+        cmp dword ptr [rdi-0x340-0x40], 0x740053 // 'S' 't'
+        je CheckStay
+        cmp dword ptr [rdi-0x340-0x40], 0x650052 // 'R' 'e'
+        je CheckRenderTarget
         jmp savePtr
 
-        check2:
-        cmp dword ptr [rdi-0x33C], 0x00790061 // 'a' 'y'
+        CheckStay:
+        cmp dword ptr [rdi-0x33C-0x40], 0x790061 // 'a' 'y'
         je retcode
+        jmp savePtr
+
+        CheckRenderTarget:
+        cmp dword ptr [rdi-0x33C-0x40], 0x64006E // 'n' 'd'
+        je retcode
+        jmp savePtr
         
         savePtr: // god i love not having pushad
         push rax
@@ -59,7 +70,8 @@ static naked void detour() {
         push r15
 
         sub rsp, 8 // align stack to 16
-        mov rcx, rdi
+        mov rcx, rdi // was rdi
+        sub rcx, 0x40 // adjust for old offset to get whole struct
         call AddHitDataPtr
         add rsp, 8
 
@@ -105,12 +117,14 @@ std::optional<std::string> DrawLines::on_initialize() {
 
     baseAddr = g_framework->get_module().as<uintptr_t>();
     HMODULE base = (HMODULE)baseAddr;
-    auto addr = m_patterns_cache->find_addr(base, "F3 0F 11 47 58 48 83 C4 70"); // DevilMayCry5.exe+45D26FA
+    //auto addr = m_patterns_cache->find_addr(base, "F3 0F 11 47 58 48 83 C4 70"); // DevilMayCry5.exe+45CE01A, 5
+    auto addr = m_patterns_cache->find_addr(base, "8B 47 18 89 43 18 48 8B 16 E8"); // DevilMayCry5.exe+2A628FC, 6
+    //auto addr = baseAddr + 0x2A628FC;
     if (!addr) {
         return "Unable to find DrawLines pattern.";
     }
 
-    if (!install_new_detour(addr.value(), m_detour, &detour, &jmp_ret, 5)) {
+    if (!install_new_detour(addr.value(), m_detour, &detour, &jmp_ret, 6)) {
         //  return a error string in case something goes wrong
         spdlog::error("[{}] failed to initialize", get_name());
         return "Failed to initialize DrawLines";
@@ -187,9 +201,10 @@ void DrawLines::on_draw_ui() {
     ImGui::ShowHelpMarker("Debug option to check it's displaying correctly");
     // ImGui::Checkbox("Display JC Spheres", &DrawLines::jcSpheresDisplay); // does nothing atm
     ImGui::Checkbox("Display Attack Spheres", &DrawLines::attackSpheresDisplay);
-    ImGui::ShowHelpMarker("WARNINGS:\nThis crashes in mission start, need help from someone clevererer.\n"
-        "These are not perfect - I am not checking if displayed spheres are actually capsules, and only get one of the size values."
-        "Cam lag might not be accounted for, so they might lag a little behind your player too.");
+    ImGui::ShowHelpMarker("WARNINGS:\n"
+        "These are not perfect - I am not checking if displayed spheres are actually capsules, and only get one of the size values.\n"
+        "Cam lag might not be accounted for, so they might lag a little behind your player too.\n"
+        "Some are missing. No idea why.");
 }
 
 void DrawLines::on_frame() {

@@ -24,7 +24,7 @@ public:
 
 	std::string_view get_name() const override
 	{
-		return "Remove concentration restriction to perform JCE";
+		return "JCENoMotivationLimit";
 	}
 	std::string get_checkbox_name() override
 	{
