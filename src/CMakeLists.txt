@@ -302,6 +302,8 @@ set(MODS_SRC
     mods/ParryWithFinesse.hpp
     mods/DrawLines.hpp
     mods/DrawLines.cpp
+    mods/SkipColorUpPartOfCS.hpp
+    mods/SkipColorUpPartOfCS.cpp
 	
 	mods/TestLuaMod.hpp
 	mods/TestLuaMod.cpp

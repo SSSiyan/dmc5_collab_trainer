@@ -116,6 +116,7 @@
         #include "mods/DTWingsOnly.hpp"
         #include "mods/modNeroAlwaysInitialDT.hpp"
         #include "mods/NeroInfCalibur.hpp"
+        #include "mods/SkipColorUpPartOfCS.hpp"
     // Dante
         #include "mods/BypassBPCav.hpp"
         #include "mods/DanteMaxSDT.hpp"
@@ -339,6 +340,7 @@ Mods::Mods()
         m_mods.emplace_back(std::make_unique<NoDTCooldown>());
         m_mods.emplace_back(std::make_unique<NeroAlwaysInitialDT>());
         m_mods.emplace_back(std::make_unique<NeroInfCalibur>());
+        m_mods.emplace_back(std::make_unique<SkipColorUpPartOfCS>());
     // Dante
         m_mods.emplace_back(std::make_unique<BypassBPCav>());
         m_mods.emplace_back(std::make_unique<DanteMaxSDT>());
