@@ -98,17 +98,17 @@ void LuaDevilBreakerSwitcher::on_load_lua_mod()
 void LuaDevilBreakerSwitcher::on_config_load(const utility::Config& cfg) {
     for (int i = 0; i < 8; i++) {
         breakers[i] =
-            cfg.get<int>("breaker_slot_" + std::to_string(i)).value_or(0);
+            cfg.get<int>("lua_breaker_slot_" + std::to_string(i)).value_or(0);
     }
     //BreakerSwitcher::switcher_mode = cfg.get<int>("switcher_mode").value_or(0);
-    breakaway_type = cfg.get<int>("breakaway_type").value_or(0);
+    breakaway_type = cfg.get<int>("lua_breakaway_type").value_or(0);
     //breakaway_index = cfg.get<int>("breakaway_button").value_or(0);
-    infinite_breakers = cfg.get<bool>("infinite_breakers").value_or(false);
+    infinite_breakers = cfg.get<bool>("lua_infinite_breakers").value_or(false);
     //BreakerSwitcher::use_secondary = cfg.get<bool>("use_secondary").value_or(false);
-    breaker_to_breaker_cancel = cfg.get<bool>("faster_breaker").value_or(false);
+    breaker_to_breaker_cancel = cfg.get<bool>("lua_faster_breaker").value_or(false);
     //BreakerSwitcher::instantkeyboardbreakers = cfg.get<bool>("instant_keyboard_breakers").value_or(false);
     //BreakerSwitcher::breakaway_button = bsinputs[breakaway_index];
-    disable_diagonal = cfg.get<bool>("disable_diagonal").value_or(false);
+    disable_diagonal = cfg.get<bool>("lua_disable_diagonal").value_or(false);
 }
 
 // during load
@@ -116,15 +116,15 @@ void LuaDevilBreakerSwitcher::on_config_load(const utility::Config& cfg) {
 // during save
 void LuaDevilBreakerSwitcher::on_config_save(utility::Config& cfg) {
     for (int i = 0; i < 8; i++) {
-        cfg.set<int>("breaker_slot_" + std::to_string(i), breakers[i]);
+        cfg.set<int>("lua_breaker_slot_" + std::to_string(i), breakers[i]);
     }
     //cfg.set<int>("switcher_mode", BreakerSwitcher::switcher_mode);
-    cfg.set<int>("breakaway_type", breakaway_type);
+    cfg.set<int>("lua_breakaway_type", breakaway_type);
     //cfg.set<int>("breakaway_button", breakaway_index);
-    cfg.set<bool>("infinite_breakers", infinite_breakers);
+    cfg.set<bool>("lua_infinite_breakers", infinite_breakers);
     //cfg.set<bool>("use_secondary", BreakerSwitcher::use_secondary);
-    cfg.set<bool>("faster_breaker", breaker_to_breaker_cancel);
-    cfg.set<bool>("disable_diagonal", disable_diagonal);
+    cfg.set<bool>("lua_faster_breaker", breaker_to_breaker_cancel);
+    cfg.set<bool>("lua_disable_diagonal", disable_diagonal);
     //cfg.set<bool>("instant_keyboard_breakers", BreakerSwitcher::instantkeyboardbreakers);
 }
 
@@ -172,6 +172,9 @@ void LuaDevilBreakerSwitcher::on_draw_ui()
 //ImGui::InputInt("breaker right", (int*)&BreakerSwitcher::breakers[3]);
     //UI::Combo("Breaker Type", (int*)&BreakerSwitcher::switcher_mode, "Off\0Switcher\0Cycler\0");
     //"Off\0Hold button to override\0On\0"
+    if (breakaway_type < 0 || breakaway_type > 1) { // crashed if above 1
+        breakaway_type = 0;
+    }
     UI::Combo("Breakaway Type", &this->breakaway_type, "Hold button to override\0On\0");
     if (breakaway_type == 0) {
         /*if (UI::Combo("Override button", &breakaway_index,
