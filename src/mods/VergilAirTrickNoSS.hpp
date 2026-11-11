@@ -1,6 +1,5 @@
 #pragma once
 #include "Mod.hpp"
-#include "sdk/ReClass.hpp"
 class VergilAirTrickNoSS : public Mod {
 public:
 	VergilAirTrickNoSS()
@@ -18,14 +17,12 @@ public:
 private:
 	static inline VergilAirTrickNoSS* _mod = nullptr;
 
-	sdk::REMethodDefinition* _trickTargetCntrStartAirTrickMethod;
-	sdk::REMethodDefinition* _pl0800SetAirTrickActionMethod;
+	uintptr_t _trickTargetCntrStartAirTrickMethod = 0;
+	uintptr_t _pl0800SetAirTrickActionMethod = 0;
 
 	void init_check_box_info() override;
 
 	static bool check_air_trick_hook(uintptr_t threadCntxt, uintptr_t pl0800);
-
-	void on_sdk_init() override;
 
 	std::shared_ptr<Detour_t> _checkAirTrickHook;
 };

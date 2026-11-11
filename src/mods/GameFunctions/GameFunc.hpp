@@ -550,7 +550,10 @@ namespace GameFunctions
 		}
 
 		static int get_list_count(uintptr_t dotNetList) noexcept
-		{ return *(int*)(dotNetList + 0x18);
+		{
+			if (dotNetList == 0)
+				return 0;
+			return *(int*)(dotNetList + 0x18);
 		}
 		/// <summary>
 		/// return how many items can fit in the list passed.

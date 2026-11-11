@@ -98,7 +98,7 @@ void startup_thread() {
     freopen("CONOUT$", "w", stderr);
 #endif
     // Wait so we can see if boot crashes are our fault
-    Sleep(5000);
+    // Sleep(5000);
     if (load_dinput8()) {
 		g_framework = std::make_unique<ModFramework>();
         // After the the main framework is instantiated we initialize

@@ -187,6 +187,11 @@ public:
 		/// <returns></returns>
 		func::Vec3 get_lockon_pos(bool& isNullPtr, func::Quaternion &rot)
 		{
+			if (_getLockOnPosMethod == nullptr)
+			{
+				isNullPtr = true;
+				return func::Vec3(0, 0, 0);
+			}
 			uintptr_t lockOnObj = *(uintptr_t*)(_pl0800 + 0x428);
 			if (lockOnObj == 0 /*IsBadReadPtr((void*)lockOnObj, 0x8)*/)
 			{
@@ -646,6 +651,8 @@ private:
 	void on_sdk_init() override
 	{
 		_getLockOnPosMethod = sdk::find_method_definition("app.LockOnObject", "get_lockOnPosition()");
+		if (_getLockOnPosMethod == nullptr)
+			spdlog::error("Unable to find app.LockOnObject.get_lockOnPosition().");
 	}
 
 	void after_all_inits() override

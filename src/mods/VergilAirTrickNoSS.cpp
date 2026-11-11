@@ -18,8 +18,10 @@ bool VergilAirTrickNoSS::check_air_trick_hook(uintptr_t threadCntxt, uintptr_t p
     auto trickTargetCntrl = *(uintptr_t*)(pl0800 + 0x19B0);
     if (trickTargetCntrl == 0)
         return false;
-    _mod->_trickTargetCntrStartAirTrickMethod->call(threadCntxt, trickTargetCntrl, pl0800);
-    _mod->_pl0800SetAirTrickActionMethod->call(threadCntxt, pl0800, targetGameObj);
+    using StartAirTrickFn = void(*)(uintptr_t, uintptr_t, uintptr_t);
+    using SetAirTrickActionFn = void(*)(uintptr_t, uintptr_t, uintptr_t);
+    reinterpret_cast<StartAirTrickFn>(_mod->_trickTargetCntrStartAirTrickMethod)(threadCntxt, trickTargetCntrl, pl0800);
+    reinterpret_cast<SetAirTrickActionFn>(_mod->_pl0800SetAirTrickActionMethod)(threadCntxt, pl0800, targetGameObj);
     return true;
 }
 
@@ -29,16 +31,6 @@ void VergilAirTrickNoSS::init_check_box_info() {
     m_check_box_name = m_prefix_check_box_name + std::string(get_name());
     m_hot_key_name = m_prefix_hot_key_name + std::string(get_name());
 }
-
-void VergilAirTrickNoSS::on_sdk_init() {
-        _trickTargetCntrStartAirTrickMethod = sdk::find_method_definition("app.PlayerVergilPL.TrickTargetController", "startAirTrick(app.PlayerVergilPL)");
-        _pl0800SetAirTrickActionMethod = sdk::find_method_definition("app.PlayerVergilPL", "setAirTrickAction(via.GameObject)");
-        auto hook_method = sdk::find_method_definition("app.PlayerVergilPL", "checkAirTrick()");
-        _checkAirTrickHook = std::make_shared<Detour_t>(hook_method->get_function(), &VergilAirTrickNoSS::check_air_trick_hook);
-        _checkAirTrickHook->create();
-        m_detours.push_back(_checkAirTrickHook);
-}
-
 
 std::optional<std::string> VergilAirTrickNoSS::on_initialize() {
     init_check_box_info();
@@ -52,16 +44,27 @@ std::optional<std::string> VergilAirTrickNoSS::on_initialize() {
 
     auto base = g_framework->get_module().as<HMODULE>(); // note HMODULE
 
-    //auto checkAirTrickAddr = m_patterns_cache->find_addr(base, "FE 01 EB 8F CC CC CC CC CC 48 89 5C 24 18");
-    ////DevilMayCry5.app_PlayerVergilPL__checkAirTrick113998 (-0x9)
-    //if (!checkAirTrickAddr) {
-    //    return "Unable to find VergilAirTrickNoSS.checkAirTrickAddr pattern.";
-    //}
+    // app_PlayerVergilPL_TrickTargetController__startAirTrick112775 0x140A22860.
+    auto startAirTrickAddr = m_patterns_cache->find_addr(base, "48 89 5C 24 10 48 89 74 24 18 57 48 83 EC 20 49 8B F8 48 8B F2 48 8B D9 4D 85 C0 75 19 BA 38 00 00 00 48 8B 5C 24 38 48 8B 74 24 40 48 83 C4 20 5F E9 EA EE B1 01 48 8B 41 50 48 8B 48 18 48 85 C9 0F 85 7E 01 00 00");
+    if (!startAirTrickAddr)
+        return "Unable to find VergilAirTrickNoSS.startAirTrickAddr pattern.";
+    _trickTargetCntrStartAirTrickMethod = startAirTrickAddr.value();
 
-    //_checkAirTrickHook = std::make_shared<Detour_t>(checkAirTrickAddr.value() + 0x9, &VergilAirTrickNoSS::check_air_trick_hook);
-    //if (!_checkAirTrickHook->create())
-    //    return "Unable to create VergilAirTrickNoSS._checkAirTrickHook.";
-    //m_detours.push_back(_checkAirTrickHook);
+    auto setAirTrickActionAddr = m_patterns_cache->find_addr(base, "48 89 5C 24 08 57 48 83 EC 70 48 8B DA 48 8B F9 E8 7B");
+    if (!setAirTrickActionAddr)
+        return "Unable to find VergilAirTrickNoSS.setAirTrickActionAddr pattern.";
+    _pl0800SetAirTrickActionMethod = setAirTrickActionAddr.value();
+
+    auto checkAirTrickAddr = m_patterns_cache->find_addr(base, "FE 01 EB 8F CC CC CC CC CC 48 89 5C 24 18");
+    //DevilMayCry5.app_PlayerVergilPL__checkAirTrick113998 (-0x9)
+    if (!checkAirTrickAddr) {
+        return "Unable to find VergilAirTrickNoSS.checkAirTrickAddr pattern.";
+    }
+
+    _checkAirTrickHook = std::make_shared<Detour_t>(checkAirTrickAddr.value() + 0x9, &VergilAirTrickNoSS::check_air_trick_hook);
+    if (!_checkAirTrickHook->create())
+        return "Unable to create VergilAirTrickNoSS._checkAirTrickHook.";
+    m_detours.push_back(_checkAirTrickHook);
     return Mod::on_initialize();
 }
 

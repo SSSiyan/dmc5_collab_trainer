@@ -22,7 +22,6 @@ static naked void wave_data_detour() {
 		//settingscheck:
 		/*cmp byte ptr [EnemyWaveSettings::isCustomPermitSetting], 1
 		je permitcheat*/
-		jmp originalcode
 
 		/*wavespawncheat://Actually hardlimit
 		mov esi, [LDK::hardlimit]

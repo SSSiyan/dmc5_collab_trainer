@@ -31,7 +31,7 @@ private:
 
 	const sdk::REMethodDefinition *_doppelComeBackMethod = nullptr;
 	const sdk::REMethodDefinition* _pl0800SetActionMethod = nullptr;
-	const sdk::REMethodDefinition* _getLockOnPosMethod;
+	const sdk::REMethodDefinition* _getLockOnPosMethod = nullptr;
 
 
 	void init_check_box_info() override
@@ -49,7 +49,7 @@ private:
 			return;
 		bool isTrickUpAllowed = InfiniteTrickUp::cheaton ? true : *(bool*)(pl0800 + 0x19BC);//isTrickUp;
 		auto padInput = *(uintptr_t*)(pl0800 + 0xEF0);
-		if (!isTrickUpAllowed || !_mod->_inputSys->is_front_input((REManagedObject*)padInput, _mod->_angleForwardThreshold))
+		if (_pl0800SetActionMethod == nullptr || _mod->_inputSys == nullptr || !isTrickUpAllowed || !_mod->_inputSys->is_front_input((REManagedObject*)padInput, _mod->_angleForwardThreshold))
 		{
 			_isPadInputTrickUp = false;
 			return;
@@ -69,6 +69,12 @@ private:
 		_pl0800SetActionMethod = sdk::find_method_definition("app.PlayerVergilPL", "setAction(app.PlayerVergilPL.Actions, System.UInt32, System.Single, System.Single, "
 			"via.motion.InterpolationMode, via.motion.InterpolationCurve, System.Boolean, System.Boolean)");
 		_getLockOnPosMethod = sdk::find_method_definition("app.LockOnObject", "get_lockOnPosition()");
+		if (_doppelComeBackMethod == nullptr)
+			spdlog::error("Unable to find app.PlayerVergilPL.comeBackDoppelGanger().");
+		if (_pl0800SetActionMethod == nullptr)
+			spdlog::error("Unable to find app.PlayerVergilPL.setAction().");
+		if (_getLockOnPosMethod == nullptr)
+			spdlog::error("Unable to find app.LockOnObject.get_lockOnPosition().");
 	}
 
 public:
@@ -89,7 +95,7 @@ public:
 
 	static void set_appear_pos(uintptr_t threadCtxt, uintptr_t vergil)//Calling this in trickTrails mod cause hook already there.
 	{
-		if (!cheaton || !_mod->_isPadInputTrickUp)
+		if (!cheaton || _mod == nullptr || !_mod->_isPadInputTrickUp || _mod->_getLockOnPosMethod == nullptr)
 			return;
 		if (vergil == 0 || *(int*)(vergil + 0x108) == 1 || *(int*)(vergil + 0xE64) != 4)
 			return;

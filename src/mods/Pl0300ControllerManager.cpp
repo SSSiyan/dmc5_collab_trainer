@@ -521,14 +521,14 @@ std::optional<std::string> PlCntr::Pl0300Cntr::Pl0300ControllerManager::on_initi
         return "Unanable to find Pl0300ControllerManager.app_Em5900Base_AttackRate_AttackRateVergilMode__get_missionNo213806 pattern.";
     }
 
-    auto addEmFuncAddr = m_patterns_cache->find_addr(base, "5F C3 CC CC CC CC 48 89 5C 24 18 48 89 6C 24 20 56 57 41 56");
+    auto addEmFuncAddr = m_patterns_cache->find_addr(base, "B6 00 CC CC CC CC CC CC CC CC 48 89 5C 24 18");
 
     if (!addEmFuncAddr)
     {
         return "Unanable to find Pl0300ControllerManager.addEmFuncAddr pattern.";
     }
 
-    requestAddEmFuncAddr = addEmFuncAddr ? addEmFuncAddr.value(): (uintptr_t)base + 0x19DD130;
+    requestAddEmFuncAddr = addEmFuncAddr.value() + 0x0A;
 
     auto requestBossCam = m_patterns_cache->find_addr(base, "48 8B C4 48 89 58 10 48 89 70 18 48 89 78 20 55 48 8D 68 A1 48 81 EC F0");
     //DevilMayCry5.app_PlayerCameraController__RequestBossCamera147662
@@ -539,7 +539,7 @@ std::optional<std::string> PlCntr::Pl0300Cntr::Pl0300ControllerManager::on_initi
     requestBossCameraFunc = requestBossCam ? requestBossCam.value() : (uintptr_t)base + 0xD018E0;
 
     //tu7 aob 4C 8B C7 E8 ? ? ? ? 48 8B 46 50 48 83 78 ? ? 0F 85 ? ? ? ? 48 8B 15 ? ? ? ? 45 33 C0 8B 1D ? ? ? ? 48 8B CE E8 ? ? ? ?  +0x3
-    auto requestAddEmAddr = m_patterns_cache->find_addr(base, "4C 8B C7 E8 ? ? ? ? 48 8B 46 50 48 83 78 ? ? 0F 85 ? ? ? ? 48 8B 15 ? ? ? ? 45 33 C0 8B 1D ? ? ? ? 48 8B CE E8 ? ? ? ? "); // DevilMayCry5.exe+9D30A1 
+    auto requestAddEmAddr = m_patterns_cache->find_addr(base, "E8 8A A0 00 01"); // DevilMayCry5.exe+9D30A1
     if (!requestAddEmAddr)
     {
         return "Unanable to find Pl0300ControllerManager.requestAddEmAddr pattern.";
@@ -603,7 +603,7 @@ std::optional<std::string> PlCntr::Pl0300Cntr::Pl0300ControllerManager::on_initi
         return "Unable to find Pl0300ControllerManager.pl0300DoppelDestroyReqBossCamAddr pattern.";
     }
 
-    if (!install_new_detour(requestAddEmAddr.value()+0x3, _requestAddEmObjDetour, &em6000_request_add_em_detour, &requestAddEmRet, 0x5))
+    if (!install_new_detour(requestAddEmAddr.value(), _requestAddEmObjDetour, &em6000_request_add_em_detour, &requestAddEmRet, 0x5))
     {
         spdlog::error("[{}] failed to initialize", get_name());
         return "Failed to initialize Pl0300ControllerManager.requestAddEm";

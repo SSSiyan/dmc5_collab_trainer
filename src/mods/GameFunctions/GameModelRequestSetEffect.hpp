@@ -23,16 +23,21 @@ namespace GameFunctions
 			
 		private:
 			bool mng1F = false;
-			REManagedObject* effect_id;
+
 		public:
 			EffectID()
 			{
-				effect_id = sdk::create_instance("via.effect.script.EffectID");
-				utility::re_managed_object::add_ref(effect_id);
-				//auto id = g_framework->get_module().as<uintptr_t>() + 0x7E60C88;
-				//memcpy(mng, (const void*)(*(uintptr_t*)id), 0x10);
-			}
+				auto base = g_framework->get_module().as<HMODULE>();
+				auto match = utility::scan(base,
+					"41 B9 1F 00 00 00 48 8B D0 48 8B CF 48 8B D8 45 8D 41 E2 E8 ? ? ? ? "
+					"48 8B 4F 50 48 83 79 18 00 75 4D 48 8B 0D ? ? ? ? 48 3B D9 74 41 "
+					"48 85 DB 74 0F 48 8B CB E8 ? ? ? ? 48 8B 0D ? ? ? ?");
+				if (!match)
+					throw std::runtime_error("Unable to find EffectID.");
 
+				auto id = utility::calculate_absolute(*match + 0x26, 4);
+				memcpy(mng, (const void*)(*(uintptr_t*)id), 0x10);
+			}
 			EffectID(int dataContainerIndx, int containerID, int elementID, bool isDataContainerIndxOnly, bool isContainerIDOnly, bool isElementIDOnly) : EffectID()
 			{
 				
@@ -41,21 +46,11 @@ namespace GameFunctions
 				ElementID = elementID;
 				IsDataContainerIndxOnly = isDataContainerIndxOnly;
 				IsElementIDOnly = isElementIDOnly;
-				IsContainerIDOnly = isContainerIDOnly;
-				*(int*)(effect_id + 0x10) = DataContainerIndx;
-				*(int*)(effect_id + 0x14) = ContainerID;
-				*(int*)(effect_id + 0x18) = ElementID;
-				*(bool*)(effect_id + 0x1C) = IsDataContainerIndxOnly;
-				*(bool*)(effect_id + 0x1D) = IsContainerIDOnly;
-				*(bool*)(effect_id + 0x1E) = IsElementIDOnly;
-
+				(void)isContainerIDOnly;
 			}
 
 			EffectID(int containerID, int elementID) : EffectID(-1, containerID, elementID, true, false, false)
 			{
-			}
-			REManagedObject* get_effectIDObject() {
-				return effect_id;
 			}
 		};
 
@@ -101,12 +96,7 @@ namespace GameFunctions
 		{
 			if (!utility::isGoodReadPtr(model, 8))
 				return nullptr;
-			return sdk::call_object_func_easy<void*>((REManagedObject*)model, 
-				"requestEffect(via.effect.script.EffectID, via.vec3, via.Quaternion)",
-				effectID.get()->get_effectIDObject(), pos, rot);
-			//auto game_model = reinterpret_cast<API::ManagedObject*>(model);
-			//return game_model->call<API::ManagedObject*>("requestEffect(via.effect.script.EffectID, via.vec3, via.Quaternion)", effectID.get(), pos, rot);
-			//return request_set_effect(get_thread_context(), model, effectID.get(), pos, rot);
+			return request_set_effect(get_thread_context(), model, effectID.get(), pos, rot);
 		}
 
 		/// <summary>
@@ -137,11 +127,7 @@ namespace GameFunctions
 		{
 			if (!utility::isGoodReadPtr(model, 8))
 				return;
-			sdk::call_object_func_easy<void*>((REManagedObject*)model,
-				"killEffect(via.effect.script.EffectID)",
-				effectID.get()->get_effectIDObject());
-			//game_model->call<API::ManagedObject*>("killEffect(via.effect.script.EffectID)", effectID.get());
-			//kill_effect(get_thread_context(), model, effectID.get());
+			kill_effect(get_thread_context(), model, effectID.get());
 			return;
 			
 			

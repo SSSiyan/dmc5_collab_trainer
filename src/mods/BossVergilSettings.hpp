@@ -74,6 +74,8 @@ private:
 	{
 		if (!cheaton || !_useAirRaidCheats || !_skipAirRaid || pl == 0 || *(int*)(pl + 0xE64) != 3 || !gf::StringController::str_cmp(str, L"Concentrate"))
 			return;
+		if (_plSetActionMethod == nullptr || _pl0300CntrlManager == nullptr)
+			return;
 		if (_pl0300CntrlManager->get_pl0300_controller(pl).lock() != nullptr)//FriendlyVergil/BOB/BossActions
 			return;
 		_plSetActionMethod->call(threadCntx, pl, _waitStr->get_net_str(), 0, 0, 0, 0, 0, false, false, true, 0);
@@ -83,6 +85,8 @@ private:
 	{
 		_plSetActionMethod = sdk::find_method_definition("app.Player", "setAction(System.String, System.UInt32, System.Single, System.Single, via.motion.InterpolationMode, via.motion.InterpolationCurve, "
 			"System.Boolean, System.Boolean, System.Boolean, app.GameModel.ActionPriority)");
+		if (_plSetActionMethod == nullptr)
+			spdlog::error("Unable to find app.Player.setAction().");
 		_waitStr = std::make_unique<gf::SysString>(L"Wait");
 	}
 

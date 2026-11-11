@@ -43,6 +43,7 @@ public:
 		m_full_name_string = "Increased Enemy Spawns (+)";
 		m_author_string = "V.P.Zadov";
 		m_description_string = "Increase the number of enemies that spawn and adjust the time between spawns.";
+		m_depends_on = { "EnemyWaveEditor" };
 
 		for (int i = 0; i < enemySettings.size(); i++) {
 			enemySettings[i].emId = EnemyData::indx_to_id(i);

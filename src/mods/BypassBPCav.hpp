@@ -18,11 +18,9 @@ public:
 
   // called by m_mods->init() you'd want to override this
   std::optional<std::string> on_initialize() override;
-  void on_sdk_init() override;
   uintptr_t static jmp_cavrfix1_return;
   uintptr_t static jmp_cavrfix2_return;
   uintptr_t static jmp_cavrfix3_return;
-  static bool m_cavrfix_sdk_hook(uintptr_t rcx, uintptr_t WeaponId);
   
   bool static cheaton;
 
@@ -44,7 +42,6 @@ private:
   void init_check_box_info() override;
 
   //function hooks
-  std::shared_ptr<Detour_t> m_cavrfix_sdk_detour;
   std::shared_ptr<Detour_t> m_cavrfix1_detour;
   std::shared_ptr<Detour_t> m_cavrfix2_detour;
   std::shared_ptr<Detour_t> m_cavrfix3_detour;

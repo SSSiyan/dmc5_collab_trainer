@@ -383,20 +383,20 @@ Mods::Mods()
         m_mods.emplace_back(std::make_unique<PlSetActionData>());
         m_mods.emplace_back(std::make_unique<EndLvlHooks::EndLvlHooks>());
         m_mods.emplace_back(std::make_unique<EnemyFixes>());
-        m_mods.emplace_back(std::make_unique<PlCntr::Pl0300Cntr::Pl0300ControllerManager>());//Bunch of em6000 hooks, some of them are using by other mods. Broken AOB on tu7 UpdateLockOnTargetAddr // TESTING
+        m_mods.emplace_back(std::make_unique<PlCntr::Pl0300Cntr::Pl0300ControllerManager>());//Bunch of em6000 hooks, some of them are using by other mods. Broken AOB on tu7 UpdateLockOnTargetAddr
         //// Common
         m_mods.emplace_back(std::make_unique<LockOnNoHold>());
         m_mods.emplace_back(std::make_unique<WitchTime>());
         //// Gameplay
         m_mods.emplace_back(std::make_unique<MissionManager>());//Must initilize before EmSwapper, seems to just get mission number // TESTING
         m_mods.emplace_back(std::make_unique<EnemySwapper>()); // Might need EnemyWaveEditor
-        //m_mods.emplace_back(std::make_unique<EnemyDataSettings>()); // TESTING
+        m_mods.emplace_back(std::make_unique<EnemyDataSettings>());
 
         m_mods.emplace_back(std::make_unique<AirMoves>());
-        //m_mods.emplace_back(std::make_unique<EnemyWaveSettings>()); // Not even gonna try bro // TESTING
+        m_mods.emplace_back(std::make_unique<EnemyWaveSettings>());
         m_mods.emplace_back(std::make_unique<CheckpointPos>());
-        // m_mods.emplace_back(std::make_unique<BossDanteSetup>()); // depends on DanteNoSdtStun // crashes on loading the enemy, can't find anything useful in the stack
-        // m_mods.emplace_back(std::make_unique<BossVergilSettings>()); // TESTING, crashes
+        m_mods.emplace_back(std::make_unique<BossDanteSetup>()); // depends on DanteNoSdtStun
+        m_mods.emplace_back(std::make_unique<BossVergilSettings>());
         m_mods.emplace_back(std::make_unique<WaveEditorMod::EnemyWaveEditor>()); // I think EnemySwapper needs this
         m_mods.emplace_back(std::make_unique<SecretMissionTimer>());
         m_mods.emplace_back(std::make_unique<PosActionEditor>());
@@ -426,21 +426,21 @@ Mods::Mods()
         m_mods.emplace_back(std::make_unique<VergilAirTrick>()); // instant transmission crashes if stack is misaligned
         ////m_mods.emplace_back(std::make_unique<VergilSDTTrickEfx>()); // Removed until better times
         m_mods.emplace_back(std::make_unique<InfiniteTrickUp>());
-        //m_mods.emplace_back(std::make_unique<DMC3JCE>()); // crashes on init now only if using aoblists? I edited some V stuff in PlayerTracker I guess??
+        m_mods.emplace_back(std::make_unique<DMC3JCE>());
         m_mods.emplace_back(std::make_unique<JCENoMotivationLimit>()); // akasha51 https://www.nexusmods.com/devilmaycry5/users/1241088
-        ////m_mods.emplace_back(std::make_unique<TrickDodgeNoDisappear>()); // TESTING, doesn't work but idc
+        m_mods.emplace_back(std::make_unique<TrickDodgeNoDisappear>());
         m_mods.emplace_back(std::make_unique<VergilWalkingGuard>());
         m_mods.emplace_back(std::make_unique<VergilGuardYamatoBlock>());
         m_mods.emplace_back(std::make_unique<AirTrickDodge>());
         m_mods.emplace_back(std::make_unique<VergilNoRoyalForkDelay>());
         m_mods.emplace_back(std::make_unique<VergilDoppelInitSetup>());
         m_mods.emplace_back(std::make_unique<InstantDoppel>()); // requires VergilDoppelInitSetup
-        //m_mods.emplace_back(std::make_unique<VergilTrickTrailsEfx>()); // needs boss trick up to be present
-        //m_mods.emplace_back(std::make_unique<BossTrickUp>()); // requires TrickTrailsEfx
+        m_mods.emplace_back(std::make_unique<VergilTrickTrailsEfx>());
+        m_mods.emplace_back(std::make_unique<BossTrickUp>()); // requires TrickTrailsEfx
         m_mods.emplace_back(std::make_unique<VergilSDTAlwaysCancels>());
         m_mods.emplace_back(std::make_unique<DoppelNoComeBack>());
         m_mods.emplace_back(std::make_unique<BossVergilMoves>()); // requires pl0300ControllerManager
-        m_mods.emplace_back(std::make_unique<VergilGuardSlowMotion>()); // works but meh idc about it
+        m_mods.emplace_back(std::make_unique<VergilGuardSlowMotion>());
         m_mods.emplace_back(std::make_unique<VergilQuickSilver>());
         m_mods.emplace_back(std::make_unique<ParryWithFinesse>());
         
