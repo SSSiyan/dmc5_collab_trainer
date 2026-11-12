@@ -106,7 +106,7 @@ private:
     enum PanelID_ : uint8_t;
     enum OptionID_ : uint8_t;
 
-    static constexpr char TRAINER_VERSION_STR[] = "TU6 2.0 PRE RELEASE 2";
+    static constexpr char TRAINER_VERSION_STR[] = "TU6 2.0 PRE RELEASE 3";
 
     void initialize_game_specifics();
 

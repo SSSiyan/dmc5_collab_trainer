@@ -811,6 +811,12 @@ bool FileEditor::asset_check(const wchar_t* game_path, const wchar_t* mod_path) 
 
 void __fastcall FileEditor::selected_costume_processor(uintptr_t RCX, uintptr_t ui2120GUI)
 {
+    // get a new config so we don't rewrite old values
+    if (g_FileEditor->m_config) {
+        utility::Config latest_config{ g_FileEditor->m_config.value().get_path() };
+        g_FileEditor->m_config.value().get_key_values() = latest_config.get_key_values();
+    }
+
     uint32_t& selected_costume_slot = *(uint32_t*)(ui2120GUI + 0xCC);
 
     uint32_t og_slots = 4;
