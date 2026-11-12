@@ -1239,10 +1239,64 @@ void ModFramework::begin_hooking_d3d()
     hooker.detach();
 }
 
+void ModFramework::draw_error() const
+{
+	const bool exeVersionError = m_exe_version_mismatch;
+	if (exeVersionError && m_focused_mod_panel != PanelID_Gameplay) {
+		switch (m_focused_mod_panel) {
+		case PanelID_Scenario: ImGui::TextWrapped("Were you expecting to find something working here?"); break;
+		case PanelID_System: ImGui::TextWrapped("Nope, nothing here either"); break;
+		case PanelID_Nero: ImGui::TextWrapped("Alright I'd blame Hitch for this"); break;
+		case PanelID_Dante: ImGui::TextWrapped("You gotta install tu6"); break;
+		case PanelID_Gilver: ImGui::TextWrapped("Haha look its just like the empty V page on a working trainer"); break;
+		case PanelID_Vergil: ImGui::TextWrapped("This one we blame VP on"); break;
+		case PanelID_Strive: ImGui::TextWrapped("no balrog"); break;
+		case PanelID_SearchResults: ImGui::TextWrapped("There is nothing to search. It's all here"); break;
+		default: ImGui::TextWrapped("Were you expecting to find something working here?"); break;
+		}
+		return;
+	}
+
+	if (exeVersionError) {
+		ImGui::TextHyperlink("https://www.nexusmods.com/devilmaycry5/mods/369", "https://www.nexusmods.com/devilmaycry5/mods/369");
+	}
+	ImGui::TextWrapped("Trainer error: %s", m_error.c_str());
+}
+
 void ModFramework::initialize_game_specifics()
 {
 	// Game specific initialization stuff
     std::thread init_thread([this]() {
+    
+	// check tu6 rapidSlashIsAirAddr (DevilMayCry5.exe+1C0930F) bytes to figure out tu
+	static constexpr uintptr_t rapidSlashIsAirAddr = 0x1C0930F;
+	static constexpr unsigned char tu6Bytes[] = { 0x0F, 0xB6, 0xC8, 0x48, 0x8B, 0x43, 0x50, 0x48 };
+    static constexpr unsigned char tu7Bytes[] = { 0x85, 0xC0, 0x0F, 0x84, 0xA9, 0x00, 0x00, 0x00 };
+	static constexpr unsigned char tu8Bytes[] = { 0x48, 0x17, 0x06, 0x0F, 0x5A, 0xC9, 0x0F, 0x5A };
+	uintptr_t gameBase = get_module().as<uintptr_t>();
+	const unsigned char* tuBytes = nullptr;
+	if (gameBase != 0) {
+        tuBytes = (const unsigned char*)(gameBase + rapidSlashIsAirAddr);
+	}
+	int detectedTu = 0;
+	if (tuBytes != nullptr && std::memcmp(tuBytes, tu6Bytes, 8) == 0) {
+		detectedTu = 6;
+	} else if (tuBytes != nullptr && std::memcmp(tuBytes, tu7Bytes, 8) == 0) {
+		detectedTu = 7;
+	} else if (tuBytes != nullptr && std::memcmp(tuBytes, tu8Bytes, 8) == 0) {
+		detectedTu = 8;
+	}
+	if (detectedTu != 6) {
+		m_exe_version_mismatch = true;
+		if (detectedTu == 0) {
+			m_error = "Incorrect exe version. I don't know which exe this is, but it doesn't match what I have for TU6, 7, or 8.\n";
+		} else {
+            m_error = "Incorrect exe version. This exe matches the bytes for TU" + std::to_string(detectedTu) + ".\n";
+		}
+		m_error += "This version of the trainer is made for the TU6 version of the game, and future trainer updates will likely keep supporting this TU. "
+			"If you wish to keep using recent builds, please revert to the TU6 exe. Look on the Nexus page linked above to find out how. "
+			"Old trainer builds with less features exist for TU7, but TU8 is not (and likely will never be) supported.";
+	}
 
     spdlog::info("Loading REFramework SDK");
 	reframework::initialize_sdk();
@@ -1252,15 +1306,18 @@ void ModFramework::initialize_game_specifics()
 	auto e = m_mods->on_initialize(m_load_on_startup);
 
 	if (e) {
+		if (!m_error.empty()) {
+			m_error += "\n\n";
+		}
 		if (e->empty()) {
-			m_error = "An unknown error has occurred.";
+			m_error += "An unknown error has occurred.";
 		}
 		else {
-			m_error = *e;
+			m_error += *e;
 		}
 	}
 
-	spdlog::info("Loading key binds.");
+	spdlog::info("Loading keybinds.");
 
 	KeyBinder::LoadBind("Menu Key");
 	KeyBinder::LoadBind("Close Menu Key");
@@ -1583,11 +1640,11 @@ void ModFramework::draw_panels()
                     ImGui::TextWrapped("No match found, search for the name of a mod!");
                 }
 			}
-			else if (!m_game_data_initialized) {
+			else if (!m_game_data_initialized && m_error.empty()) {
 				ImGui::TextWrapped("Trainer is currently initializing...");
 			}
 			else if (!m_error.empty()) {
-				ImGui::TextWrapped("Trainer error: %s", m_error.c_str());
+				draw_error();
 			}
         }
         ImGui::End();
@@ -1620,11 +1677,11 @@ void ModFramework::draw_panels()
             ImGui::Text("Taunts");
             m_mods->on_pagelist_ui(Mod::Page_Taunt, modListIndent);
         }
-        else if (!m_game_data_initialized) {
+        else if (!m_game_data_initialized && m_error.empty()) {
             ImGui::TextWrapped("Trainer is currently initializing...");
         }
         else if (!m_error.empty()) {
-            ImGui::TextWrapped("Trainer error: %s", m_error.c_str());
+            draw_error();
         }
     }
     ImGui::End();
@@ -1653,11 +1710,11 @@ void ModFramework::draw_panels()
             ImGui::Text("Bloody Palace");
             m_mods->on_pagelist_ui(Mod::Page_BloodyPalace, modListIndent);
         }
-        else if (!m_game_data_initialized) {
+        else if (!m_game_data_initialized && m_error.empty()) {
             ImGui::TextWrapped("Trainer is currently initializing...");
         }
         else if (!m_error.empty()) {
-            ImGui::TextWrapped("Trainer error: %s", m_error.c_str());
+            draw_error();
         }
     }
     ImGui::End();
@@ -1674,11 +1731,11 @@ void ModFramework::draw_panels()
             ImGui::Text("Quality-of-life");
             m_mods->on_pagelist_ui(Mod::Page_QOL, modListIndent);
         }
-        else if (!m_game_data_initialized) {
+        else if (!m_game_data_initialized && m_error.empty()) {
             ImGui::TextWrapped("Trainer is currently initializing...");
         }
         else if (!m_error.empty()) {
-            ImGui::TextWrapped("Trainer error: %s", m_error.c_str());
+            draw_error();
         }
     }
     ImGui::End();
@@ -1699,11 +1756,11 @@ void ModFramework::draw_panels()
             ImGui::Text("Cheats");
             m_mods->on_pagelist_ui(Mod::Page_Nero, modListIndent);
         }
-        else if (!m_game_data_initialized) {
+        else if (!m_game_data_initialized && m_error.empty()) {
             ImGui::TextWrapped("Trainer is currently initializing...");
         }
         else if (!m_error.empty()) {
-            ImGui::TextWrapped("Trainer error: %s", m_error.c_str());
+            draw_error();
         }
     }
     ImGui::End();
@@ -1720,11 +1777,11 @@ void ModFramework::draw_panels()
             ImGui::Text("Cheats");
             m_mods->on_pagelist_ui(Mod::Page_DanteCheat, modListIndent);
         }
-        else if (!m_game_data_initialized) {
+        else if (!m_game_data_initialized && m_error.empty()) {
             ImGui::TextWrapped("Trainer is currently initializing...");
         }
         else if (!m_error.empty()) {
-            ImGui::TextWrapped("Trainer error: %s", m_error.c_str());
+            draw_error();
         }
     }
     ImGui::End();
@@ -1737,11 +1794,11 @@ void ModFramework::draw_panels()
             ImGui::Text("Cheats");
             m_mods->on_pagelist_ui(Mod::Page_Gilver, modListIndent);
         }
-        else if (!m_game_data_initialized) {
+        else if (!m_game_data_initialized && m_error.empty()) {
             ImGui::TextWrapped("Trainer is currently initializing...");
         }
         else if (!m_error.empty()) {
-            ImGui::TextWrapped("Trainer error: %s", m_error.c_str());
+            draw_error();
         }
     }
     ImGui::End();
@@ -1770,11 +1827,11 @@ void ModFramework::draw_panels()
             ImGui::Text("VFX Settings");
             m_mods->on_pagelist_ui(Mod::Page_VergilVFXSettings, modListIndent);
         }
-        else if (!m_game_data_initialized) {
+        else if (!m_game_data_initialized && m_error.empty()) {
             ImGui::TextWrapped("Trainer is currently initializing...");
         }
         else if (!m_error.empty()) {
-            ImGui::TextWrapped("Trainer error: %s", m_error.c_str());
+            draw_error();
         }
     }
     ImGui::End();
@@ -1786,11 +1843,11 @@ void ModFramework::draw_panels()
             ImGui::Text("Dante");
             m_mods->on_pagelist_ui(Mod::Page_DanteStrive, modListIndent);
         }
-        else if (!m_game_data_initialized) {
+        else if (!m_game_data_initialized && m_error.empty()) {
             ImGui::TextWrapped("Trainer is currently initializing...");
         }
         else if (!m_error.empty()) {
-            ImGui::TextWrapped("Trainer error: %s", m_error.c_str());
+            draw_error();
         }
     }
     ImGui::End();

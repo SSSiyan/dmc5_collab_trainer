@@ -112,6 +112,7 @@ private:
 
     void draw_ui();
     void draw_panels();
+    void draw_error() const;
     void draw_options() const;
     void draw_trainer_settings();
     void draw_notifs() const;
@@ -200,6 +201,7 @@ private:
     std::shared_ptr<spdlog::logger> m_logger{};
     
     std::string m_error{ "" };
+    bool m_exe_version_mismatch{ false };
 
     // Explorer Thread - We have a dedicated thread for searching because this tanks performance if done per frame
     std::thread m_explorer_thread{};
