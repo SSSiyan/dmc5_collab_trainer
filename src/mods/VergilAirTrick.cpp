@@ -597,7 +597,7 @@ void VergilAirTrick::on_config_save(utility::Config& cfg)
 
 void VergilAirTrick::on_draw_ui()
 {
-	ImGui::Checkbox("Change Air Trick startup.", &isCustomWaitTime);
+	ImGui::Checkbox("Change Air Trick startup", &isCustomWaitTime);
 	if (isCustomWaitTime) {
           ImGui::TextWrapped("Controls the delay before trick movement starts. 6 - default game value.");
           UI::SliderFloat("##WaitTimeSlider", &waitTime, 0.0f, 20.0f, "%.1f");
@@ -615,9 +615,9 @@ void VergilAirTrick::on_draw_ui()
 		}
 		ImGui::Separator();
 	}
-	
-	ImGui::TextWrapped("Vergil teleports directly to the target instead of moving through the air invisibly. Can send you out of bounds." //  Doesn't work with Vergil or Death Scrissors when they are out of bounds. " I think this goes without saying? maybe not.
-	"Doesn't work with Nidhogg.");
+
+	//  Doesn't work with Vergil or Death Scrissors when they are out of bounds. " I think this goes without saying? maybe not.
+	ImGui::TextWrapped("Vergil teleports directly to the target instead of moving through the air while invisible. Warning: this can send you out of bounds, and doesn't work with Nidhogg.");
 	ImGui::Checkbox("Instant Transmission", &isTeleport);
 	if (isTeleport)
 	{
@@ -641,7 +641,7 @@ void VergilAirTrick::on_draw_ui()
 
 		ImGui::TextWrapped("Distance from enemy:"); //redo this text at some point
 		UI::SliderFloat("##CorrectionFinishOffset", &trickCorrection, 0.25f, 2.25f, "%.2f", 1.0F, ImGuiSliderFlags_None);
-		ImGui::TextWrapped("Height above/below enemy."); //redo this text at some point
+		ImGui::TextWrapped("Height above/below enemy:"); //redo this text at some point
 		UI::SliderFloat("##CorrectionFinishZOffset", &teleportZOffs, -1.5f, 3.25f, "%.2f", 1.0F, ImGuiSliderFlags_None);
 		ImGui::Checkbox("Force ground trick", &forceGroundTrick);
 		ImGui::ShowHelpMarker("Vergil always appears on the ground after teleporting to enemies like Empusa Queen, Goliath, Baphomet when they are not in the air.");

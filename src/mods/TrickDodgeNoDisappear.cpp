@@ -38,7 +38,7 @@ std::optional<std::string> TrickDodgeNoDisappear::on_initialize()
 	m_depends_on = { "EndLvlHooks" };
 	m_full_name_string = "Change invisibility duration on Trick Dodge(+)";
 	m_author_string = "V.P.Zadov";
-	m_description_string = "Extend or complitely remove invisibility while trick dodging.";
+	m_description_string = "Extend or completely remove invisibility while trick dodging.";
 
 	auto getEndDrawOffAddr = m_patterns_cache->find_addr(base, "33 F3 0F 10 47 64"); //DevilMayCry5.exe+1FDF1A1 (-0x1)
 	if (!getEndDrawOffAddr)
@@ -75,7 +75,7 @@ std::optional<std::string> TrickDodgeNoDisappear::on_initialize()
 	 //ImGui::ShowHelpMarker("This option works correctly only when Position Action Editor mod enabled and trick dodge speed changed.");
 	 //if (!isAuto)
 	 //{
-	ImGui::TextWrapped("Frames after Vergil's model will be visible:");
+	ImGui::TextWrapped("Frames after tricking Vergil's model will be made visible:");
 	UI::SliderFloat("##frameDrawOff", &endDrawOffMod, 0, 360.0f, "%.1f", 1.0f, ImGuiSliderFlags_AlwaysClamp);
 	 //}	
  }

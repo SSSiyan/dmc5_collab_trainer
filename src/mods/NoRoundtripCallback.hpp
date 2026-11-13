@@ -99,7 +99,7 @@ public:
 		m_on_page = Page_Animation;
 		m_full_name_string = "Disable Roundtrip Callback Animation (+)";
 		m_author_string = "V.P.Zadov";
-		m_description_string = "Disables the callback animations for Dante & Vergil's roundtrip moves.";
+		m_description_string = "Disables the callback animations for Dante's & Vergil's roundtrips.";
 		//These are bad aob's and I do not care
 		//.text:0000000140C85DE6	app_WeaponForceEdge__checkRoundTripReturn222023	movss   [rsp+58h+var_38], xmm1
 		auto FEBackAddr = m_patterns_cache->find_addr(base, "F3 0F 11 4C 24 ? E8 ? ? ? ? 48 8B 43 50 48 83 78 ? ? 75 AB");//DevilMayCry5.exe+C85DE6

@@ -37,7 +37,7 @@ std::optional<std::string> DisableAutoAssist::on_initialize() {
   m_depends_on           = { "PlayerTracker" };
   m_full_name_string     = "Disable Auto Assist";
   m_author_string        = "The HitchHiker";
-  m_description_string   = "Prevents Auto Assist from being activated.";
+  m_description_string   = "Prevents Auto Assist from being activated when holding Ctrl or R3.";
 
   set_up_hotkey();
 

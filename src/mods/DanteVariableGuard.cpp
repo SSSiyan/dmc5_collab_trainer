@@ -45,7 +45,7 @@ std::optional<std::string> DanteVariableGuard::on_initialize() {
   m_depends_on           = { "PlayerTracker" };
   m_full_name_string     = "Set Royal Guard Level (+)";
   m_author_string        = "SSSiyan";
-  m_description_string   = "Lock Guard meter to whatever level you want.";
+  m_description_string   = "Lock the Guard meter to whatever level you want.";
 
   set_up_hotkey();
 

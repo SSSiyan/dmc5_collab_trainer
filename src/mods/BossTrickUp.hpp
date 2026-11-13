@@ -197,8 +197,7 @@ public:
 		m_depends_on = { "InputSystem", "PlayerTracker", "VergilTrickTrailsEfx" };
 		m_full_name_string = "Boss's Trick Up (+)";
 		m_author_string = "V.P.Zadov, SSSiyan";
-		m_description_string = "Lock on + forward + trick will instantly teleport Vergil directly above the enemies head, similarly to how Boss Vergil teleports. Can interrupt any move what air trick can also. "
-			"Trick - up without lock on works as normal.";
+		m_description_string = "Lock on + forward + trick will instantly teleport Vergil directly above the enemies head, like Boss Vergil.";
 
 		set_up_hotkey();
 

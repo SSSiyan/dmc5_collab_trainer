@@ -33,7 +33,7 @@ std::optional<std::string> DanteNoSdtStun::on_initialize()
 	m_on_page = Page_DanteSDT;
 	m_full_name_string = "No SDT Recovery";
 	m_author_string = "V.P.Zadov";
-	m_description_string = "Remove Recovery animation on SDT Exit.";
+	m_description_string = "Remove the recovery animation that plays when leaving SDT.";
 
 	auto sdtCancellableAddr = m_patterns_cache->find_addr(base, "77 FE FF 0F B6 C8 48 8B 43 50"); //DevilMayCry5.exe+1973ABE (-0x3)
 	if (!sdtCancellableAddr)

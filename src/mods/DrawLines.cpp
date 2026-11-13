@@ -111,7 +111,9 @@ std::optional<std::string> DrawLines::on_initialize() {
     m_depends_on = {};
     m_full_name_string = "Draw Debug Lines (+)";
     m_author_string = "Siyan";
-    m_description_string = "View lines in 3d space that visualize the sizes of collisions etc.";
+    m_description_string = "View lines in 3d space that visualize the sizes of collisions.\n"
+        "Some are missing and I am assuming all hitboxes are spheres, so take this display with a grain of salt.\n"
+        "This display does not account for camera lag or fov, so at some times there will be a slight mismatch.";
 
     set_up_hotkey();
 
@@ -198,13 +200,9 @@ void DrawLines::Draw3dShapes() {
 
 void DrawLines::on_draw_ui() {
     ImGui::Checkbox("Display Player Position", &DrawLines::playerPosDisplay);
-    ImGui::ShowHelpMarker("Debug option to check it's displaying correctly");
+    ImGui::ShowHelpMarker("Debug option to check lines are displaying correctly");
     // ImGui::Checkbox("Display JC Spheres", &DrawLines::jcSpheresDisplay); // does nothing atm
     ImGui::Checkbox("Display Attack Spheres", &DrawLines::attackSpheresDisplay);
-    ImGui::ShowHelpMarker("WARNINGS:\n"
-        "These are not perfect - I am not checking if displayed spheres are actually capsules, and only get one of the size values.\n"
-        "Cam lag might not be accounted for, so they might lag a little behind your player too.\n"
-        "Some are missing. No idea why.");
 }
 
 void DrawLines::on_frame() {

@@ -327,7 +327,7 @@ std::optional<std::string> TauntSelector::on_initialize() {
   m_depends_on = { "PlayerTracker","StyleRank" };
   m_full_name_string     = "Taunt Selector (+)";
   m_author_string        = "The HitchHiker";
-  m_description_string   = "Allows you to specify what taunts will be used by each character.";
+  m_description_string   = "Allows you to specify which taunts will be used by each character.";
 
   set_up_hotkey();
 

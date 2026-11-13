@@ -1671,7 +1671,7 @@ public:
 		{
 			ImGui::TextWrapped
 			(
-				"This mod can can softlock or crash your game."
+				"This mod can can softlock or crash your game.\n"
 				//"\"New\" moves can't hit boss himself.\n"
 				"Boss moves can select random enemies as target.\n"
 				"Air Raid can send you out of bounds.\n"
@@ -1687,11 +1687,12 @@ public:
 		}
 
 		ImGui::Checkbox("Ex costume", &_isExCostume);
-		ImGui::ShowHelpMarker("If checked, boss will have an EX color costume, if not - the default one.");
+		ImGui::ShowHelpMarker("The boss will use the EX color costume.");
 
-		if(ImGui::CollapsingHeader("Boss's Doppelganger"))
+		if(ImGui::CollapsingHeader("Boss' Doppelganger"))
 		{
 			ImGui::Checkbox("Enable ##1", &_isBossDoppelEnabled);
+			ImGui::ShowHelpMarker("Spend 3 DT bars to summon the boss's version of the doppelganger instead of the player's. The doppelganger will fight by itself, and its AI depends on the missions current difficulty.\nSummon the boss' doppelganger by pressing on the selected delay button. Press again when the boss's doppelganger is active to banish it.");
 			bool isSelected = false;
 			if (ImGui::BeginCombo("##doppelDelay", _delayNames[_doppelSpeed - 1]))
 			{
@@ -1705,7 +1706,6 @@ public:
 				}
 				ImGui::EndCombo();
 			}
-			ImGui::ShowHelpMarker("Summon the boss's doppelganger when pressing on the selected delay button. Press again when the boss's doppelganger is active to banish it.");
 
 			ImGui::TextWrapped("Doppelganger attack rate");
 			UI::SliderFloat("##DoppelsAttackRate", &_doppelAttackRate, 0, 1.0f, "%.2f", 1.0f, ImGuiSliderFlags_AlwaysClamp);
@@ -1737,11 +1737,12 @@ public:
 
 			ImGui::Checkbox("Instant doppelganger tricks", &_useInstantDoppelsTeleports);
 		}
-		ImGui::ShowHelpMarker("Spend 3 DT bars to summon the boss's version of the doppelganger instead of the player's. The doppelganger will fight by itself, and its AI depends on the missions current difficulty.");
 
 		if (ImGui::CollapsingHeader("Air Raid"))
 		{
 			ImGui::Checkbox("Enable##1", &_isAirRaidEnabled);
+			ImGui::ShowHelpMarker("Instead of performing Deep Stinger in human form, Vergil slightly heals, restores full concentration and performs Air Raid. He is mostly invulnerable in this state, "
+				"but can be hit by Dante's Royal Release or Judgement. Requires half of the SDT gauge.");
 
 			ImGui::Separator();
 			ImGui::TextWrapped("Hit controller settings:");
@@ -1803,12 +1804,11 @@ public:
 
 			ImGui::Spacing();
 		}
-		ImGui::ShowHelpMarker("Instead of performing Deep Stinger in human form, Vergil slightly heals, restores full concentration and performs Air Raid. He invulnerable in this state, "
-			"except for Dante's royal release or judgement attacks. Requires half of the SDT gauge.");
 
 		if (ImGui::CollapsingHeader("Trick Stab"))
 		{
 			ImGui::Checkbox("Enable##2", &_isTrickStabEnabled);
+			ImGui::ShowHelpMarker("When Yamato selected, press LockOn + Back + Trick + Attack with level 2 concentration to perform a trick stab. Consumes concentration on use.");
 			ImGui::Separator();
 
 			ImGui::TextWrapped("Hit controller settings:");
@@ -1861,14 +1861,13 @@ public:
 			ImGui::RadioButton("Middle", (int*)&_stabHitEfx, (int)StabHitEfx::StabMiddle); ImGui::SameLine(); ImGui::Spacing(); ImGui::SameLine();
 			ImGui::RadioButton("High", (int*)&_stabHitEfx, (int)StabHitEfx::StabHigh);
 		}
-		ImGui::ShowHelpMarker("When Yamato selected, press LockOn + Back + Trick + Attack with level 2 concentration to perform a trick stab. Consumes concentration on use.");
 
 		if (ImGui::CollapsingHeader("Load info:"))
 		{
 			ImGui::TextWrapped("Is pl0300 loaded: %d", _isPl0300Loaded);
+			ImGui::ShowHelpMarker("If either of these values are false, the mod will not work.");
 			ImGui::TextWrapped("Is pl0800 check command hook installed: %d", _isPl0800CheckCommHookInstalled);
 		}
-		ImGui::ShowHelpMarker("If any of these values are false, the mod will not work.");
 
 		ImGui::Spacing();
 		/*UI::SliderInt("_PlId", &_curPlId, 3, 4, "%d", 1.0f, ImGuiSliderFlags_AlwaysClamp);
@@ -1888,7 +1887,7 @@ public:
 
 		ImGui::Spacing();*/
 
-		if (ImGui::Button("Force end boss's moves."))
+		if (ImGui::Button("Forcefully end all boss moves."))
 		{
 			for (auto& i : _vergilsList)
 				i->force_end_moves();

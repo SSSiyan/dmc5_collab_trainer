@@ -138,7 +138,7 @@ std::optional<std::string> HUDOptions::on_initialize() {
   m_depends_on              = { "PlayerTracker" };
   m_full_name_string        = "HUD Options (+)";
   m_author_string           = "SSSiyan";
-  m_description_string      = "Disable / Enable elements of the Heads Up Display.";
+  m_description_string      = "Disable elements of the Heads Up Display.";
 
   set_up_hotkey();
 

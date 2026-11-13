@@ -43,7 +43,8 @@ std::optional<std::string> NeroAlwaysInitialDT::on_initialize() {
   m_depends_on         = { "PlayerTracker" };
   m_full_name_string   = "Force Initial DT Animation";
   m_author_string      = "SSSiyan";
-  m_description_string = "Note: the voice line will only play the first time you use this each run of M20.";
+  m_description_string = "Force the DT animation that usually only plays the first time you activate DT in mission 20.\n"
+      "The voice line will still only play the first time you use this each run of M20.";
 
   set_up_hotkey();
 

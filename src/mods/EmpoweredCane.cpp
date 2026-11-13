@@ -2,33 +2,26 @@
 #include "mods/PlayerTracker.hpp"
 //jumps
 uintptr_t EmpoweredCane::jmp_return{NULL};
-uintptr_t EmpoweredCane::ja_return{NULL};
 bool EmpoweredCane::cheaton{NULL};
 //variables
 // clang-format off
 // only in clang/icl mode on x64, sorry
 
-  static naked void newmem_detour() {
+static naked void newmem_detour() {
 __asm {
-  validation:
-    cmp [PlayerTracker::playerid], 2 //change this to the char number obviously
-    jne code
-    cmp byte ptr [EmpoweredCane::cheaton], 1
-    je cheatcode
-    jmp code
-  code:
-    //+0x5D
-    comiss xmm2, xmm3
-    ja ja_return
-    mov [rbx+0x20], edx
-    jmp qword ptr [EmpoweredCane::jmp_return]
-
-  cheatcode:
-  ja_return:
-	jmp qword ptr [EmpoweredCane::ja_return]
-  }
+	validation:
+		cmp [PlayerTracker::playerid], 2 //change this to the char number obviously
+		jne code
+		cmp byte ptr [EmpoweredCane::cheaton], 1
+		je cheatcode
+		jmp code
+	code:
+		mov [rsp+0x08], rbx
+		jmp qword ptr [EmpoweredCane::jmp_return]
+	cheatcode:
+		ret
+	}
 }
-
 
 // clang-format on
 
@@ -53,14 +46,13 @@ std::optional<std::string> EmpoweredCane::on_initialize() {
   
   auto bettercane_addr = m_patterns_cache->find_addr(base, "77 5B 89 53 20");
 
-  EmpoweredCane::ja_return = bettercane_addr.value()+0x5D;
   if (!bettercane_addr) {
-    return "Unable to find bettercane pattern.";
+	return "Unable to find bettercane pattern.";
   }
-  if (!install_new_detour(bettercane_addr.value(), m_bettercane_detour, &newmem_detour, &jmp_return, 5)) {
-    //return a error string in case something goes wrong
-    spdlog::error("[{}] failed to initialize", get_name());
-    return "Failed to initialize bettercane";
+  if (!install_new_detour(bettercane_addr.value() - 0x65, m_bettercane_detour, &newmem_detour, &jmp_return, 5)) {
+	//return a error string in case something goes wrong
+	spdlog::error("[{}] failed to initialize", get_name());
+	return "Failed to initialize bettercane";
   }
 
   return Mod::on_initialize();

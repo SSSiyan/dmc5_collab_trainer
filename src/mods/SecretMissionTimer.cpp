@@ -57,7 +57,7 @@ std::optional<std::string> SecretMissionTimer::on_initialize()
 	m_on_page = Page_GameMode;
 	m_full_name_string = "Freeze secret missions timer (+)";
 	m_author_string = "V.P.Zadov";
-	m_description_string = "Also can prevent starting \"no ground\" timer on sm9.";
+	m_description_string = "Freeze secret mission timers.";
 
 	auto timerAddr = m_patterns_cache->find_addr(base, "F3 0F 10 43 5C 0F 5A C0 F2");// DevilMayCry5.exe+9473C0
 	if (!timerAddr)
@@ -106,7 +106,7 @@ void SecretMissionTimer::on_draw_ui()
 {
 	ImGui::TextWrapped("Timer value: ");
 	ImGui::InputFloat("##timerInput", &timer, 0.0f, 0.0f, "%.2f");
-	ImGui::Checkbox("Disable sm9 no ground start timer", &isM9NoStart);
+	ImGui::Checkbox("Disable Secret Mission 9's no ground start timer", &isM9NoStart);
 }
 
 // void SecretMissionTimer::on_draw_debug_ui(){}

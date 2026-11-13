@@ -532,11 +532,11 @@ public:
 		init_check_box_info();
 		auto base = g_framework->get_module().as<HMODULE>(); // note HMODULE
 		m_is_enabled = &cheaton;
-		m_on_page = Page_Mechanics;
+		m_on_page = Page_Animation;
 		m_full_name_string = "Moves speed editor (+)";
 		m_depends_on = { "PlayerTracker","EndLvlHooks" };
 		m_author_string = "V.P.Zadov";
-		m_description_string = "Change speed of some actions that changes player's position (like stinger(s), trick dodge (yea now you can make boss's trick dodge in the trainer), ets).";
+		m_description_string = "Change speed of some actions that change player's position.";
 
 		set_up_hotkey();
 
@@ -570,14 +570,15 @@ public:
 	// you are in the imgui window here.
 	void on_draw_ui() override 
 	{
-		ImGui::TextWrapped("Vergil");
-		for (auto& move : _settingsListVergil)
-			move.print_settings();
+		if (ImGui::CollapsingHeader("Vergil")) {
+			for (auto& move : _settingsListVergil)
+				move.print_settings();
+		}
 		ImGui::Spacing();
-		ImGui::Separator();
-		ImGui::TextWrapped("Dante");
-		for (auto& move : _settingsListDante)
-			move.print_settings();
+		if (ImGui::CollapsingHeader("Dante")) {
+			for (auto& move : _settingsListDante)
+				move.print_settings();
+		}
 	}
 };
 //clang-format on

@@ -65,7 +65,7 @@ std::optional<std::string> DTWingsOnly::on_initialize() {
   m_depends_on           = { "PlayerTracker" };
   m_full_name_string     = "Nero Wings (+)";
   m_author_string        = "Siyan";
-  m_description_string   = "Set when wings appear.";
+  m_description_string   = "Set when Nero's wings appear.";
 
   set_up_hotkey();
 

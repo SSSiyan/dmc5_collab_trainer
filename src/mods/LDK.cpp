@@ -520,7 +520,7 @@ std::optional<std::string> LDK::on_initialize() {
   m_depends_on			 = { "PlayerTracker" };
   m_full_name_string     = "Legendary Dark Knights (+)";
   m_author_string        = "The HitchHiker, Dr. Penguin, deepdarkkapustka, V.P.Zadov";
-  m_description_string   = "Enables the Legendary Dark Knights Gamemode.";
+  m_description_string   = "Enables the Legendary Dark Knights Gamemode. This is accessed by ticking the cheat and then playing a mission on the Son of Sparda difficulty.";
 
   set_up_hotkey();
 

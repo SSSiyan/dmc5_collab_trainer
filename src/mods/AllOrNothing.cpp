@@ -103,7 +103,7 @@ std::optional<std::string> AllOrNothing::on_initialize() {
   m_depends_on           = { "PlayerTracker","StyleRank" };
   m_full_name_string     = "Must Style (+)";
   m_author_string        = "The HitchHiker";
-  m_description_string   = "Disable damage altogether or when below a certain Style Rank.";
+  m_description_string   = "Disable outgoing damage when below a certain Style Rank.";
 
   set_up_hotkey();
 

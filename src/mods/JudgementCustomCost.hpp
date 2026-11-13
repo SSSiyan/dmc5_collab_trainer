@@ -39,7 +39,7 @@ public:
 		m_on_page = Page_DanteSDT;
 		m_full_name_string = "Custom Judgement Cost (+)";
 		m_author_string = "V.P.Zadov";
-		m_description_string = "Set cost for SDT's \"Judgement\" move.";
+		m_description_string = "Set how much it costs to perform Judgement.";
 
 		set_up_hotkey();
 

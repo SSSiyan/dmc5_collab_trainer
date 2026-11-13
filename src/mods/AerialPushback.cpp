@@ -84,7 +84,7 @@ std::optional<std::string> AerialPushback::on_initialize() {
   m_depends_on         = { "PlayerTracker" };
   m_full_name_string   = "Move Knockback Edits (+)";
   m_author_string      = "SSSiyan";
-  m_description_string = "Your character will be pushed back more than usual when performing certain moves.";
+  m_description_string = "Your character will be pushed back more when performing certain moves.";
 
   set_up_hotkey();
 
