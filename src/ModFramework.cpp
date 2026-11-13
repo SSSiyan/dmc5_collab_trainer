@@ -1553,7 +1553,7 @@ void ModFramework::draw_ui() {
 		ImGui::DockBuilderDockWindow("Dante", left);
 		ImGui::DockBuilderDockWindow("V", left);
 		ImGui::DockBuilderDockWindow("Vergil", left);
-		ImGui::DockBuilderDockWindow("StriVe", left);
+		// ImGui::DockBuilderDockWindow("StriVe", left);
 		ImGui::DockBuilderDockWindow("Search Results", left);
 
         // Settings
@@ -1835,7 +1835,7 @@ void ModFramework::draw_panels()
         }
     }
     ImGui::End();
-    ImGui::PushStyleColor(ImGuiCol_Text, m_focused_mod_panel == PanelID_Strive ? activeTabText : inactiveTabText);
+    /*ImGui::PushStyleColor(ImGuiCol_Text, m_focused_mod_panel == PanelID_Strive ? activeTabText : inactiveTabText);
     ImGui::Begin("StriVe", nullptr, panel_flags);
     ImGui::PopStyleColor();
     {
@@ -1849,10 +1849,10 @@ void ModFramework::draw_panels()
         else if (!m_error.empty()) {
             draw_error();
         }
-    }
     ImGui::End();
 
     ImGui::PopStyleColor();
+    }*/
 }
 
 void ModFramework::draw_options() const

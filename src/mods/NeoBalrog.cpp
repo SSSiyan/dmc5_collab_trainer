@@ -20,7 +20,7 @@ std::optional<std::string> NeoBalrog::on_initialize() {
     init_check_box_info();
     m_scripts = {"BalrogScript.lua"};//scripts here
     m_is_enabled = &NeoBalrog::cheaton;
-    m_on_page = Page_DanteStrive;
+    m_on_page = Page_DanteCheat;
     m_full_name_string = "Neo Balrog";
     m_author_string = "The HitchHiker";
     m_description_string = "A modified moveset that unifies balrog's punch and kick movesets.\nTap attacks for kick moves and hold to enter welter stance.";
