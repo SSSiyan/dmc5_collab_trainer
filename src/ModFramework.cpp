@@ -1851,8 +1851,8 @@ void ModFramework::draw_panels()
         }
     ImGui::End();
 
-    ImGui::PopStyleColor();
     }*/
+    ImGui::PopStyleColor();
 }
 
 void ModFramework::draw_options() const
@@ -2025,6 +2025,13 @@ void ModFramework::draw_trainer_settings()
                     ImGui::TextHyperlink("Twitch", "https://www.twitch.tv/charlie_decker", defaultColor);
                     ImGui::TextHyperlink("YouTube", "https://youtube.com/@DMC_Charlie", defaultColor);
                     //ImGui::TextHyperlink("Twitter", "???", defaultColor);
+                    ImGui::TreePop();
+                }
+                ImGui::TextWrapped("Thank you to Lethal Placebo for beta-testing and providing tech support on our discord!");
+                if (ImGui::TreeNode("Lethal Placebo"))
+                {
+                    ImGui::TextHyperlink("Twitch", "https://www.twitch.tv/lethalplacebo", defaultColor);
+                    ImGui::TextHyperlink("Twitter", "https://twitter.com/lethalplacebo", defaultColor);
                     ImGui::TreePop();
                 }
                 ImGui::TextWrapped("Special thanks to Praydog and Cursey for their awesome work on REFramework which inspired this project!");

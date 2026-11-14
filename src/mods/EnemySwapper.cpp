@@ -187,7 +187,7 @@ std::optional<std::string> EnemySwapper::on_initialize() {
   m_depends_on = { "EnemyWaveEditor" };
   m_full_name_string   = "Enemy Swapper (+)";
   m_author_string      = "V.P.Zadov";
-  m_description_string = "Swap enemy spawns. Affects normal spawns & hell judecca summons.";
+  m_description_string = "Swap enemy spawns. Affects normal spawns & hell judecca summons. Enable before entering a mission.";
 
   //uintptr_t swapIdAddr = g_framework->get_module().as<uintptr_t>() + 0xF34F6A;
 

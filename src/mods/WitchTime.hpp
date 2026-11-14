@@ -256,7 +256,7 @@ public:
 		init_check_box_info();
 		auto base = g_framework->get_module().as<HMODULE>(); // note HMODULE
 		m_is_enabled = &cheaton;
-		m_on_page = Page_CommonCheat;
+		m_on_page = Page_Mechanics;
 		m_depends_on = { "PlayerTracker", "EndLvlHooks" };
 		m_full_name_string = "Witch time (+)";
 		m_author_string = "V.P.Zadov";
