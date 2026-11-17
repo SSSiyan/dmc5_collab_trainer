@@ -249,7 +249,7 @@ std::optional<std::string> DMC3JCE::on_initialize()
 
 	m_is_enabled = &cheaton;
 	m_on_page = Page_VergilTrick;
-	m_depends_on = { "GameplayStateTracker","VergilInstantSDT","InputSystem","EndLvlHooks"};
+	m_depends_on = { "PlayerTracker","GameplayStateTracker","VergilInstantSDT","InputSystem","EndLvlHooks" };
 	m_full_name_string = "DMC3 Judgement Cut End (+)";
 	m_author_string = "V.P.Zadov";
 	m_description_string = "When not in Devil Trigger, replaces Vergil's Judgment Cut End with his Judgment Cut Barrage from his boss fight in Devil May Cry 3. Can be executed without full SDT bar.";
@@ -355,7 +355,7 @@ std::optional<std::string> DMC3JCE::on_initialize()
 
 void DMC3JCE::on_config_load(const utility::Config& cfg)
 {
-	jceController->set_rndspawn_delay( cfg.get<int>("DMC3JCE._rndDelayTime").value_or(jceController->defaultRndDelay));
+	jceController->set_rndspawn_delay(cfg.get<int>("DMC3JCE._rndDelayTime").value_or(jceController->defaultRndDelay));
 	rndDelay = jceController->get_rndspawn_delay();
 	jceController->set_trackspawn_delay(cfg.get<int>("DMC3JCE._trackDelayTime").value_or(jceController->defaultTrackDelay));
 	trackDelay = jceController->get_trackspawn_delay();

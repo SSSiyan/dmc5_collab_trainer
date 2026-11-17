@@ -102,7 +102,7 @@ public:
 
 		InputSystem *_inputSystem;
 
-		Type jceType;
+		Type jceType = Dynamic;
 
 		std::unique_ptr<Coroutines::Coroutine<ActionType, JCEController*, Type, uintptr_t>> _3jceCoroutine = nullptr;
 
@@ -187,11 +187,6 @@ public:
 		/// <returns></returns>
 		func::Vec3 get_lockon_pos(bool& isNullPtr, func::Quaternion &rot)
 		{
-			if (_getLockOnPosMethod == nullptr)
-			{
-				isNullPtr = true;
-				return func::Vec3(0, 0, 0);
-			}
 			uintptr_t lockOnObj = *(uintptr_t*)(_pl0800 + 0x428);
 			if (lockOnObj == 0 /*IsBadReadPtr((void*)lockOnObj, 0x8)*/)
 			{
@@ -375,8 +370,8 @@ public:
 		}
 
 	public:
-		const int defaultRndDelay = 120;
-		const int defaultTrackDelay = 187;
+		static constexpr int defaultRndDelay = 120;
+		static constexpr int defaultTrackDelay = 187;
 
 		int rndEmTrackInterval = 22;
 
@@ -584,13 +579,13 @@ public:
 	static inline float minSdt = 3000.0f;
 	static inline float curJceTimerAsm = 0;
 
-	static inline int rndDelay = 0;
-	static inline int trackDelay = 0;
+	static inline int rndDelay = JCEController::defaultRndDelay;
+	static inline int trackDelay = JCEController::defaultTrackDelay;
 	static inline int prevRayCastSize = 64;
 	static inline int curRayCastSize = 64;
 	static inline int newCapacity = 256;
 
-	static inline JCEController::Type jcTypeUi{};
+	static inline JCEController::Type jcTypeUi = JCEController::Dynamic;
 	static bool use_default_behaviour_asm();
 	static bool can_execute_asm();
 	static void end_jcesdt_asm(uintptr_t vergil);
