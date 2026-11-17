@@ -1692,7 +1692,8 @@ public:
 		if(ImGui::CollapsingHeader("Boss' Doppelganger"))
 		{
 			ImGui::Checkbox("Enable ##1", &_isBossDoppelEnabled);
-			ImGui::ShowHelpMarker("Spend 3 DT bars to summon the boss's version of the doppelganger instead of the player's. The doppelganger will fight by itself, and its AI depends on the missions current difficulty.\nSummon the boss' doppelganger by pressing on the selected delay button. Press again when the boss's doppelganger is active to banish it.");
+			ImGui::ShowHelpMarker("Spend 3 DT bars to summon the boss's version of the doppelganger instead of the player's. The doppelganger will fight by itself, and its AI depends on the missions current difficulty.\nSummon the boss' doppelganger by pressing on the selected delay button. Press again when the boss's doppelganger is active to banish it."
+				"\nThis only works if Summon Doppelganger Instantly under Doppelganger settings is also enabled.");
 			bool isSelected = false;
 			if (ImGui::BeginCombo("##doppelDelay", _delayNames[_doppelSpeed - 1]))
 			{
